@@ -12,26 +12,59 @@ const Slider = () => {
     let max = 2
     const intervalId = setInterval(() => {
       const list = getArrSlider(min, max, sliderList.length - 1)
+
       for (let i = 0; i < sliderList.length; i++) {
+        // reset the classname
+        sliderList[i].classList.remove(
+          'animate-slide-right',
+          'order-last',
+          'z-index-20'
+        )
+        sliderList[i].classList.remove(
+          'animate-slide-left',
+          'order-first',
+          'z-index-10'
+        )
+        sliderList[i].classList.remove(
+          'animate-slide-left2',
+          'order-2',
+          'z-index-10'
+        )
+
         if (list.some((item) => item === i)) {
           sliderList[i].style.cssText = `display: block`
         } else {
           sliderList[i].style.cssText = `display: none`
         }
       }
-      if (min === sliderList.length - 1) {
-        min = 0
-      } else {
-        min += 1
-      }
-      if (max === sliderList.length - 1) {
-        max = 0
-      } else {
-        max += 1
-      }
+
+      list.forEach((item) => {
+        if (item === max) {
+          sliderList[item].classList.add(
+            'animate-slide-right',
+            'order-last',
+            'z-index-20'
+          )
+        } else if (item === min) {
+          sliderList[item].classList.add(
+            'animate-slide-left',
+            'order-first',
+            'z-index-10'
+          )
+        } else {
+          sliderList[item].classList.add(
+            'animate-slide-left2',
+            'order-2',
+            'z-index-10'
+          )
+        }
+      })
+
+      min = min === sliderList.length - 1 ? 0 : min + 1
+      max = max === sliderList.length - 1 ? 0 : max + 1
 
       console.log(list)
-    }, 1500)
+    }, 2500)
 
     return () => {
       intervalId && clearInterval(intervalId)
@@ -39,14 +72,18 @@ const Slider = () => {
   }, [])
 
   return (
-    <div className="flex gap-4 w-full overflow-hidden px-[59px] pt-8 ">
-      {banner?.map((item) => (
-        <img
-          key={item.encodeId}
-          src={item.banner}
-          className="slider-item flex-1 object-contain w-1/3 rounded-lg"
-        />
-      ))}
+    <div className="w-full overflow-hidden px-[59px]">
+      <div className="flex gap-8 pt-8 ">
+        {banner?.map((item, index) => (
+          <img
+            key={item.encodeId}
+            src={item.banner}
+            className={`slider-item flex-1 object-contain w-[30%] rounded-lg ${
+              index <= 2 ? 'block' : 'hidden'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   )
 }
