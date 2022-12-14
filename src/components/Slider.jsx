@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getArrSlider } from '../utils/helper'
+import * as actions from '../store/actions'
 
 const Slider = () => {
   const { banner } = useSelector((state) => state.app)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const sliderList = document.getElementsByClassName('slider-item')
@@ -15,17 +17,17 @@ const Slider = () => {
 
       for (let i = 0; i < sliderList.length; i++) {
         // reset the classname
-        sliderList[i].classList.remove(
+        sliderList[i]?.classList.remove(
           'animate-slide-right',
           'order-last',
           'z-index-20'
         )
-        sliderList[i].classList.remove(
+        sliderList[i]?.classList.remove(
           'animate-slide-left',
           'order-first',
           'z-index-10'
         )
-        sliderList[i].classList.remove(
+        sliderList[i]?.classList.remove(
           'animate-slide-left2',
           'order-2',
           'z-index-10'
@@ -40,19 +42,19 @@ const Slider = () => {
 
       list.forEach((item) => {
         if (item === max) {
-          sliderList[item].classList.add(
+          sliderList[item]?.classList.add(
             'animate-slide-right',
             'order-last',
             'z-index-20'
           )
         } else if (item === min) {
-          sliderList[item].classList.add(
+          sliderList[item]?.classList.add(
             'animate-slide-left',
             'order-first',
             'z-index-10'
           )
         } else {
-          sliderList[item].classList.add(
+          sliderList[item]?.classList.add(
             'animate-slide-left2',
             'order-2',
             'z-index-10'
@@ -62,14 +64,18 @@ const Slider = () => {
 
       min = min === sliderList.length - 1 ? 0 : min + 1
       max = max === sliderList.length - 1 ? 0 : max + 1
-
-      console.log(list)
-    }, 2500)
+    }, 3500)
 
     return () => {
       intervalId && clearInterval(intervalId)
     }
   }, [])
+
+  const handleClickBanner = (item) => {
+    if (item?.type === 1) {
+      dispatch(actions.setCurSongId(item.encodeId))
+    }
+  }
 
   return (
     <div className="w-full overflow-hidden px-[59px]">
@@ -78,6 +84,7 @@ const Slider = () => {
           <img
             key={item.encodeId}
             src={item.banner}
+            onClick={() => handleClickBanner(item)}
             className={`slider-item flex-1 object-contain w-[30%] rounded-lg ${
               index <= 2 ? 'block' : 'hidden'
             }`}
