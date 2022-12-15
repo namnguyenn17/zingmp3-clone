@@ -1,11 +1,19 @@
-import { MdOutlineLibraryMusic, MdOutlineFeed } from 'react-icons/md'
-import { TbChartArcs } from 'react-icons/tb'
+import {
+  MdOutlineLibraryMusic,
+  MdOutlineFeed,
+  MdSkipNext,
+  MdSkipPrevious,
+} from 'react-icons/md'
+import { TbChartArcs, TbRepeat } from 'react-icons/tb'
 import {
   HiOutlineChartPie,
   HiArrowLeft,
   HiArrowRight,
   HiOutlineSearch,
 } from 'react-icons/hi'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
+import { BsThreeDots, BsFillPlayFill, BsPauseFill } from 'react-icons/bs'
+import { IoShuffleOutline } from 'react-icons/io5'
 
 const icons = {
   MdOutlineLibraryMusic,
@@ -15,6 +23,15 @@ const icons = {
   HiArrowLeft,
   HiArrowRight,
   HiOutlineSearch,
+  AiFillHeart,
+  AiOutlineHeart,
+  BsThreeDots,
+  TbRepeat,
+  MdSkipNext,
+  MdSkipPrevious,
+  IoShuffleOutline,
+  BsFillPlayFill,
+  BsPauseFill,
 }
 
 export default icons
