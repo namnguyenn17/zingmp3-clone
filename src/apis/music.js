@@ -27,3 +27,17 @@ export const getSong = (sid) =>
       reject(error)
     }
   })
+
+export const getDetailPlaylist = (pid) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios({
+        url: '/api/detailplaylist',
+        method: 'get',
+        params: { id: pid },
+      })
+      resolve(response)
+    } catch (error) {
+      reject(error)
+    }
+  })

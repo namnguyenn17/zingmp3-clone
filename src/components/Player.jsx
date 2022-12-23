@@ -17,14 +17,12 @@ const {
 } = icons
 
 const Player = () => {
-  const audioEl = new Audio(
-    'https://mp3-s1-zmp3.zmdcdn.me/8fa4ea68b2285b760239/3718277703496172093?authen=exp=1671259849~acl=/8fa4ea68b2285b760239/*~hmac=8ce71ff86ce0c6c4988690006158cb15&fs=MTY3MTA4NzA0OTMyMXx3ZWJWNnwwfDExNS43Ny4xODQdUngMTAy'
-  )
+  // const audioEl = new Audio(
+  //   'https://mp3-s1-zmp3.zmdcdn.me/8fa4ea68b2285b760239/3718277703496172093?authen=exp=1671259849~acl=/8fa4ea68b2285b760239/*~hmac=8ce71ff86ce0c6c4988690006158cb15&fs=MTY3MTA4NzA0OTMyMXx3ZWJWNnwwfDExNS43Ny4xODQdUngMTAy'
+  // )
   const { curSongId, isPlaying } = useSelector((state) => state.music)
   const [songInfo, setSongInfo] = useState(null)
   const [source, setSource] = useState(null)
-
-  console.log(isPlaying)
 
   useEffect(() => {
     const fetchDetailSong = async () => {
@@ -45,7 +43,7 @@ const Player = () => {
   }, [curSongId])
 
   useEffect(() => {
-    audioEl.play()
+    // audioEl.play()
   })
 
   const handlePlayToggleMusic = () => {
