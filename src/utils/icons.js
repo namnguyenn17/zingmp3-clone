@@ -12,7 +12,12 @@ import {
   HiOutlineSearch,
 } from 'react-icons/hi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import { BsThreeDots, BsFillPlayFill, BsPauseFill } from 'react-icons/bs'
+import {
+  BsThreeDots,
+  BsFillPlayFill,
+  BsPauseFill,
+  BsMusicNoteBeamed,
+} from 'react-icons/bs'
 import { IoShuffleOutline } from 'react-icons/io5'
 
 const icons = {
@@ -32,6 +37,7 @@ const icons = {
   IoShuffleOutline,
   BsFillPlayFill,
   BsPauseFill,
+  BsMusicNoteBeamed,
 }
 
 export default icons
