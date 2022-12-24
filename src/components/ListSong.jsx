@@ -1,5 +1,9 @@
 import React, { memo } from 'react'
 import { ListItem } from './'
+import icons from '../utils/icons'
+import moment from 'moment'
+
+const { BsDot } = icons
 
 const ListSong = ({ songs, totalDuration }) => {
   return (
@@ -14,6 +18,11 @@ const ListSong = ({ songs, totalDuration }) => {
           <ListItem key={item.encodeId} songData={item} />
         ))}
       </div>
+      <span className="flex items-center gap-1 py-[10px] border-t border-[#C3CECE]">
+        <span>{`${songs?.length} bài hát`}</span>
+        <BsDot size={24} />
+        <span>{moment.utc(totalDuration * 1000).format('HH:mm:ss')}</span>
+      </span>
     </div>
   )
 }

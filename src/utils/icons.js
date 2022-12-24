@@ -17,6 +17,7 @@ import {
   BsFillPlayFill,
   BsPauseFill,
   BsMusicNoteBeamed,
+  BsDot,
 } from 'react-icons/bs'
 import { IoShuffleOutline } from 'react-icons/io5'
 
@@ -38,6 +39,7 @@ const icons = {
   BsFillPlayFill,
   BsPauseFill,
   BsMusicNoteBeamed,
+  BsDot,
 }
 
 export default icons

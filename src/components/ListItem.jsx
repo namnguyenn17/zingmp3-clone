@@ -6,7 +6,7 @@ const { BsMusicNoteBeamed } = icons
 
 const ListItem = ({ songData }) => {
   return (
-    <div className="flex justify-between items-center p-[10px]">
+    <div className="flex justify-between items-center p-[10px] border-t border-[#C3CECE] hover:bg-[#DDE4E4] cursor-pointer">
       <div className="flex items-center gap-2 flex-1">
         <span>
           <BsMusicNoteBeamed />
@@ -24,7 +24,11 @@ const ListItem = ({ songData }) => {
           <span>{songData?.artistsNames}</span>
         </span>
       </div>
-      <div className="flex-1 flex justify-center">{songData?.album?.title}</div>
+      <div className="flex-1 flex justify-end">
+        <span className="inline-block w-[180px] whitespace-nowrap !overflow-hidden text-ellipsis">
+          {songData?.album?.title}
+        </span>
+      </div>
       <div className="flex-1 flex justify-end">
         {moment.utc(songData.duration * 1000).format('mm:ss')}
       </div>
