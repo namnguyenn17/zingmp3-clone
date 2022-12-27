@@ -29,6 +29,7 @@ const Player = () => {
   const dispatch = useDispatch()
   const [curSeconds, setCurSeconds] = useState(0)
   const thumbRef = useRef()
+  const trackRef = useRef()
 
   useEffect(() => {
     const fetchDetailSong = async () => {
@@ -43,6 +44,12 @@ const Player = () => {
       if (res2.data.err === 0) {
         audio.pause()
         setAudio(new Audio(res2.data.data['128']))
+      } else {
+        setAudio(new Audio())
+        dispatch(actions.play(false))
+        toast.warn(res2.data.msg)
+        setCurSeconds(0)
+        thumbRef.current.style.cssText = `right: 100%`
       }
     }
 
@@ -71,13 +78,6 @@ const Player = () => {
     }
   }, [audio])
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-
-  //   } else {
-  //   }
-  // }, [isPlaying])
-
   const handleTogglePlayMusic = async () => {
     if (isPlaying) {
       audio.pause()
@@ -86,6 +86,16 @@ const Player = () => {
       play()
       dispatch(actions.play(true))
     }
+  }
+
+  const handleClickProgressbar = (e) => {
+    const trackRect = trackRef.current.getBoundingClientRect()
+    let percent =
+      Math.round(((e.clientX - trackRect.left) * 10000) / trackRect.width) / 100
+
+    thumbRef.current.style.cssText = `right: ${100 - percent}%`
+    audio.currentTime = (percent * songInfo.duration) / 100
+    setCurSeconds(Math.round((percent * songInfo.duration) / 100))
   }
 
   return (
@@ -142,10 +152,14 @@ const Player = () => {
           <span className="">
             {moment.utc(curSeconds * 1000).format('mm:ss')}
           </span>
-          <div className="w-5/6 h-[3px] m-auto relative rounded-l-full rounded-r-full bg-[rgba(0,0,0,0.1)] cursor-pointer">
+          <div
+            className="w-5/6 h-[3px] hover:h-[6px] m-auto relative rounded-l-full rounded-r-full bg-[rgba(0,0,0,0.1)] cursor-pointer"
+            onClick={handleClickProgressbar}
+            ref={trackRef}
+          >
             <div
               ref={thumbRef}
-              className="absolute top-0 left-0  h-[3px] bg-[#0e8080] rounded-l-full rounded-r-full"
+              className="absolute top-0 left-0 bottom-0 rounded-l-full rounded-r-full bg-[#0e8080]"
             ></div>
           </div>
           <span>{moment.utc(songInfo?.duration * 1000).format('mm:ss')}</span>
