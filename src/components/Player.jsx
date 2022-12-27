@@ -54,14 +54,12 @@ const Player = () => {
   }
 
   useEffect(() => {
+    intervalId && clearInterval(intervalId)
+
+    audio.pause()
     audio.load()
     if (isPlaying) {
       play()
-    }
-  }, [audio])
-
-  useEffect(() => {
-    if (isPlaying) {
       intervalId = setInterval(() => {
         let percent =
           Math.round((audio.currentTime * 10000) / songInfo.duration) / 100
@@ -70,10 +68,15 @@ const Player = () => {
 
         setCurSeconds(Math.round(audio.currentTime))
       }, 100)
-    } else {
-      intervalId && clearInterval(intervalId)
     }
-  }, [isPlaying])
+  }, [audio])
+
+  // useEffect(() => {
+  //   if (isPlaying) {
+
+  //   } else {
+  //   }
+  // }, [isPlaying])
 
   const handleTogglePlayMusic = async () => {
     if (isPlaying) {
