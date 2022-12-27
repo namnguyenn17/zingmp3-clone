@@ -6,6 +6,7 @@ import * as apis from '../apis'
 import icons from '../utils/icons'
 import * as actions from '../store/actions'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
 const {
   AiOutlineHeart,
@@ -19,12 +20,15 @@ const {
   BsPauseFill,
 } = icons
 
+let intervalId
+
 const Player = () => {
-  const audioEl = useRef(new Audio())
   const { curSongId, isPlaying } = useSelector((state) => state.music)
   const [songInfo, setSongInfo] = useState(null)
-  const [source, setSource] = useState(null)
+  const [audio, setAudio] = useState(new Audio())
   const dispatch = useDispatch()
+  const [curSeconds, setCurSeconds] = useState(0)
+  const thumbRef = useRef()
 
   useEffect(() => {
     const fetchDetailSong = async () => {
@@ -37,12 +41,8 @@ const Player = () => {
         setSongInfo(res1.data.data)
       }
       if (res2.data.err === 0) {
-        setSource(res2.data.data['128'])
-      } else {
-        dispatch(actions.play(false))
-        audioEl.current.src = undefined
-        audioEl.current.pause()
-        toast.info(res2.data.msg)
+        audio.pause()
+        setAudio(new Audio(res2.data.data['128']))
       }
     }
 
@@ -50,22 +50,34 @@ const Player = () => {
   }, [curSongId])
 
   const play = async () => {
-    await audioEl.current.play()
+    await audio.play()
   }
 
   useEffect(() => {
-    audioEl.current.pause()
-    audioEl.current.src = source
-    audioEl.current.load()
-
+    audio.load()
     if (isPlaying) {
       play()
     }
-  }, [curSongId, source])
+  }, [audio])
+
+  useEffect(() => {
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        let percent =
+          Math.round((audio.currentTime * 10000) / songInfo.duration) / 100
+
+        thumbRef.current.style.cssText = `right: ${100 - percent}%`
+
+        setCurSeconds(Math.round(audio.currentTime))
+      }, 100)
+    } else {
+      intervalId && clearInterval(intervalId)
+    }
+  }, [isPlaying])
 
   const handleTogglePlayMusic = async () => {
     if (isPlaying) {
-      audioEl.current.pause()
+      audio.pause()
       dispatch(actions.play(false))
     } else {
       play()
@@ -123,7 +135,18 @@ const Player = () => {
             <TbRepeat size={24} />
           </span>
         </div>
-        <div>Progress bar</div>
+        <div className="w-full flex items-center justify-center gap-2 text-xs">
+          <span className="">
+            {moment.utc(curSeconds * 1000).format('mm:ss')}
+          </span>
+          <div className="w-5/6 h-[3px] m-auto relative rounded-l-full rounded-r-full bg-[rgba(0,0,0,0.1)] cursor-pointer">
+            <div
+              ref={thumbRef}
+              className="absolute top-0 left-0  h-[3px] bg-[#0e8080] rounded-l-full rounded-r-full"
+            ></div>
+          </div>
+          <span>{moment.utc(songInfo?.duration * 1000).format('mm:ss')}</span>
+        </div>
       </div>
       <div className="w-[30%] flex-auto border-red-500 border">Volume</div>
     </div>
