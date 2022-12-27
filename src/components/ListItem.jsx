@@ -1,12 +1,22 @@
 import moment from 'moment'
 import React, { memo } from 'react'
 import icons from '../utils/icons'
+import { useDispatch } from 'react-redux'
+import * as actions from '../store/actions'
 
 const { BsMusicNoteBeamed } = icons
 
 const ListItem = ({ songData }) => {
+  const dispatch = useDispatch()
+
   return (
-    <div className="flex justify-between items-center p-[10px] border-t border-[#C3CECE] hover:bg-[#DDE4E4] cursor-pointer">
+    <div
+      className="flex justify-between items-center p-[10px] border-t border-[#C3CECE] hover:bg-[#DDE4E4] cursor-pointer"
+      onClick={() => {
+        dispatch(actions.setCurSongId(songData?.encodeId))
+        dispatch(actions.play(true))
+      }}
+    >
       <div className="flex items-center gap-2 flex-1">
         <span>
           <BsMusicNoteBeamed />

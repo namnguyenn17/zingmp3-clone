@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as apis from '../apis'
 import icons from '../utils/icons'
+import * as actions from '../store/actions'
+import { toast } from 'react-toastify'
 
 const {
   AiOutlineHeart,
@@ -17,12 +20,11 @@ const {
 } = icons
 
 const Player = () => {
-  // const audioEl = new Audio(
-  //   'https://mp3-s1-zmp3.zmdcdn.me/8fa4ea68b2285b760239/3718277703496172093?authen=exp=1671259849~acl=/8fa4ea68b2285b760239/*~hmac=8ce71ff86ce0c6c4988690006158cb15&fs=MTY3MTA4NzA0OTMyMXx3ZWJWNnwwfDExNS43Ny4xODQdUngMTAy'
-  // )
+  const audioEl = useRef(new Audio())
   const { curSongId, isPlaying } = useSelector((state) => state.music)
   const [songInfo, setSongInfo] = useState(null)
   const [source, setSource] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchDetailSong = async () => {
@@ -35,19 +37,40 @@ const Player = () => {
         setSongInfo(res1.data.data)
       }
       if (res2.data.err === 0) {
-        setSource(res2.data.data['123'])
+        setSource(res2.data.data['128'])
+      } else {
+        dispatch(actions.play(false))
+        audioEl.current.src = undefined
+        audioEl.current.pause()
+        toast.info(res2.data.msg)
       }
     }
 
     fetchDetailSong()
   }, [curSongId])
 
-  useEffect(() => {
-    // audioEl.play()
-  })
+  const play = async () => {
+    await audioEl.current.play()
+  }
 
-  const handlePlayToggleMusic = () => {
-    // setIsPlaying((prev) => !prev)
+  useEffect(() => {
+    audioEl.current.pause()
+    audioEl.current.src = source
+    audioEl.current.load()
+
+    if (isPlaying) {
+      play()
+    }
+  }, [curSongId, source])
+
+  const handleTogglePlayMusic = async () => {
+    if (isPlaying) {
+      audioEl.current.pause()
+      dispatch(actions.play(false))
+    } else {
+      play()
+      dispatch(actions.play(true))
+    }
   }
 
   return (
@@ -85,7 +108,7 @@ const Player = () => {
           </span>
           <span
             className="p-1 border border-gray-700 hover:text-main-500 rounded-full cursor-pointer"
-            onClick={() => handlePlayToggleMusic()}
+            onClick={handleTogglePlayMusic}
           >
             {isPlaying ? (
               <BsPauseFill size={28} />
