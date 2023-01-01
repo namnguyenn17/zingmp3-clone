@@ -15,7 +15,7 @@ const {
   MdSkipNext,
   MdSkipPrevious,
   TbRepeat,
-  IoShuffleOutline,
+  CiShuffle,
   BsFillPlayFill,
   BsPauseFill,
 } = icons
@@ -23,7 +23,7 @@ const {
 let intervalId
 
 const Player = () => {
-  const { curSongId, isPlaying } = useSelector((state) => state.music)
+  const { curSongId, isPlaying, atAlbum } = useSelector((state) => state.music)
   const [songInfo, setSongInfo] = useState(null)
   const [audio, setAudio] = useState(new Audio())
   const dispatch = useDispatch()
@@ -98,6 +98,12 @@ const Player = () => {
     setCurSeconds(Math.round((percent * songInfo.duration) / 100))
   }
 
+  const handleNextSong = (e) => {
+    if (atAlbum) {
+      console.log(1)
+    }
+  }
+
   return (
     <div className="bg-main-400 px-5 h-full flex">
       <div className="w-[30%] flex flex-auto items-center gap-4">
@@ -126,7 +132,7 @@ const Player = () => {
       <div className="w-[40%] flex flex-auto flex-col items-center justify-center gap-1 py-2">
         <div className="flex gap-8 items-center justify-center">
           <span className="cursor-pointer" title="Bật phát ngẫu nhiên">
-            <IoShuffleOutline size={24} />
+            <CiShuffle size={24} />
           </span>
           <span className="cursor-pointer">
             <MdSkipPrevious size={24} />
@@ -141,7 +147,10 @@ const Player = () => {
               <BsFillPlayFill size={28} />
             )}
           </span>
-          <span className="cursor-pointer">
+          <span
+            onClick={handleNextSong}
+            className={`${!atAlbum ? 'text-gray-500' : 'cursor-pointer'}`}
+          >
             <MdSkipNext size={24} />
           </span>
           <span className="cursor-pointer" title="Bật phát tất cả">

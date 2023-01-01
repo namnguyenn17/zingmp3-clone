@@ -20,6 +20,7 @@ import {
   BsDot,
 } from 'react-icons/bs'
 import { IoShuffleOutline } from 'react-icons/io5'
+import { CiShuffle } from 'react-icons/ci'
 
 const icons = {
   MdOutlineLibraryMusic,
@@ -40,6 +41,7 @@ const icons = {
   BsPauseFill,
   BsMusicNoteBeamed,
   BsDot,
+  CiShuffle,
 }
 
 export default icons

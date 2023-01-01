@@ -4,8 +4,11 @@ import * as apis from '../../apis'
 import moment from 'moment/moment'
 import { ListSong } from '../../components'
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useDispatch } from 'react-redux'
+import * as actions from '../../store/actions'
 
 const Album = () => {
+  const dispatch = useDispatch()
   const { title, pid } = useParams()
   const [playlistData, setPlaylistData] = useState({})
 
@@ -57,10 +60,7 @@ const Album = () => {
             <span className="text-gray-600">Lời tựa: </span>
             <span>{playlistData?.sortDescription}</span>
           </span>
-          <ListSong
-            songs={playlistData?.song?.items}
-            totalDuration={playlistData?.song?.totalDuration}
-          />
+          <ListSong totalDuration={playlistData?.song?.totalDuration} />
         </div>
       </Scrollbars>
     </div>
